@@ -1,5 +1,4 @@
-# SmartGuard AI: Intelligent Women Safety & Emergency Response Ecosystem with IoT ESP32 Telemetry, Haversine Spatial Rerouting, and Digital Police E-FIR Integration
-
+# SmartGuard AI: Intelligent Women Safety & Emergency Response Ecosystem
 **Author(s):** Sahil Bode  
 **Affiliation:** Department of Electronics and Telecommunication Engineering, B.Tech Final Year Capstone  
 **Date:** September 2026  
