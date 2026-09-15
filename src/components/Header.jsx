@@ -1,6 +1,6 @@
 import React from 'react';
 import { 
-  Shield, Smartphone, Eye, Cpu, Zap, Code, FileText, LogOut 
+  Shield, Smartphone, Eye, Cpu, Zap, Code, FileText, LogOut, Database 
 } from 'lucide-react';
 
 export default function Header({ 
@@ -95,6 +95,14 @@ export default function Header({
             }`}
           >
             <Code className="w-3.5 h-3.5" /> B.Tech SRS
+          </button>
+          <button 
+            onClick={() => setActiveTab('blockchain')}
+            className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 whitespace-nowrap ${
+              activeTab === 'blockchain' ? 'bg-cyan-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Database className="w-3.5 h-3.5" /> Evidence Vault
           </button>
           <button 
             onClick={() => setActiveTab('report')}

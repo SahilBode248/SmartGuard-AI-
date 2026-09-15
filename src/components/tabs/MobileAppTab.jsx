@@ -2,10 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Navigation, Play, Pause, Square, PhoneCall, Mic, MicOff, Clock, 
   Plus, AlertTriangle, Zap, Volume2, VolumeX, Shield, Activity, MapPin, 
-  FileText, ShieldCheck, RefreshCw, Search, ArrowRight, Loader2, Moon, Sun, Globe 
+  FileText, ShieldCheck, RefreshCw, Search, ArrowRight, Loader2, Moon, Sun, Globe,
+  Share2, BatteryCharging, Heart
 } from 'lucide-react';
 import MapComponent from '../MapComponent';
 import { DESTINATION_PRESETS, geocodeAddress, generateRouteWaypoints, generateMultiRoutes, calculateHaversineMeters } from '../../services/locationService';
+import { generateWhatsAppShareUrl } from '../../services/policeService';
 
 export default function MobileAppTab({
   isJourneyActive,
@@ -38,6 +40,8 @@ export default function MobileAppTab({
   setShowPinModal,
   setShowIncidentModal,
   setShowFirModal,
+  setShowStealthBatteryModal,
+  setShowPinkCompanionModal,
   aiRiskScore,
   isRecordingAudio,
   anomalyLogs,
@@ -547,6 +551,53 @@ export default function MobileAppTab({
             </div>
             <h4 className="text-xs font-bold text-slate-100">Safe-Arrival Monitor</h4>
             <p className="text-[11px] text-slate-400 mt-0.5">Auto SOS escalation if check-in PIN isn't entered before ETA.</p>
+          </button>
+        </div>
+
+        {/* Row 2: Advanced Safety Tools (WhatsApp Share, Anti-Power-Off Stealth Mode, Pink Companion Escorts) */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <a
+            href={generateWhatsAppShareUrl(userProfile.name, currentPos[0], currentPos[1], originName, selectedDestination.name)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass-card glass-card-hover p-3.5 rounded-xl text-left border border-slate-800 group block"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                <Share2 className="w-4 h-4" />
+              </div>
+              <span className="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Broadcast</span>
+            </div>
+            <h4 className="text-xs font-bold text-slate-100">WhatsApp SOS Share</h4>
+            <p className="text-[11px] text-slate-400 mt-0.5">One-click live GPS link broadcast to WhatsApp & SMS.</p>
+          </a>
+
+          <button 
+            onClick={() => setShowStealthBatteryModal(true)}
+            className="glass-card glass-card-hover p-3.5 rounded-xl text-left border border-slate-800 group"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="w-8 h-8 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 group-hover:scale-110 transition-transform">
+                <BatteryCharging className="w-4 h-4" />
+              </div>
+              <span className="text-[10px] uppercase font-bold text-red-400 bg-red-500/10 px-2 py-0.5 rounded">Anti-Tamper</span>
+            </div>
+            <h4 className="text-xs font-bold text-slate-100">Stealth Power Mode</h4>
+            <p className="text-[11px] text-slate-400 mt-0.5">Simulates fake shutdown screen while keeping GPS active.</p>
+          </button>
+
+          <button 
+            onClick={() => setShowPinkCompanionModal(true)}
+            className="glass-card glass-card-hover p-3.5 rounded-xl text-left border border-slate-800 group"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="w-8 h-8 rounded-lg bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-pink-400 group-hover:scale-110 transition-transform">
+                <Heart className="w-4 h-4" />
+              </div>
+              <span className="text-[10px] uppercase font-bold text-pink-400 bg-pink-500/10 px-2 py-0.5 rounded">Volunteer</span>
+            </div>
+            <h4 className="text-xs font-bold text-slate-100">Pink Companion</h4>
+            <p className="text-[11px] text-slate-400 mt-0.5">Request verified female safety volunteer escorts nearby.</p>
           </button>
         </div>
 

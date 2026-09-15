@@ -6,6 +6,7 @@ import { startTacticalSiren, stopTacticalSiren } from './services/audioService';
 import { speakFakeCallMessage, stopSpeechSynthesis, initVoiceKeywordSOS, stopVoiceKeywordSOS } from './services/speechService';
 import { calculateHaversineMeters, DEFAULT_NAGPUR_ORIGIN, DEFAULT_NAGPUR_DESTINATION, generateRouteWaypoints, DESTINATION_PRESETS } from './services/locationService';
 import { INITIAL_POLICE_COMPLAINTS } from './services/policeService';
+import { registerServiceWorker } from './services/pwaService';
 
 // Import UI Components & Modals
 import AuthPortal from './components/AuthPortal';
@@ -16,14 +17,22 @@ import GuardianPortalTab from './components/tabs/GuardianPortalTab';
 import IotWorkbenchTab from './components/tabs/IotWorkbenchTab';
 import AiRiskMatrixTab from './components/tabs/AiRiskMatrixTab';
 import BTechSrsTab from './components/tabs/BTechSrsTab';
+import BlockchainVaultTab from './components/tabs/BlockchainVaultTab';
 import ReportTab from './components/tabs/ReportTab';
 
 import FakeCallModal from './components/modals/FakeCallModal';
 import SafeArrivalModal from './components/modals/SafeArrivalModal';
 import IncidentModal from './components/modals/IncidentModal';
 import PoliceFirModal from './components/modals/PoliceFirModal';
+import StealthBatteryModal from './components/modals/StealthBatteryModal';
+import PinkCompanionModal from './components/modals/PinkCompanionModal';
 
 export default function App() {
+  // Register PWA Service Worker on load
+  useEffect(() => {
+    registerServiceWorker();
+  }, []);
+
   // --- SLIDE 1: AUTHENTICATION STATE ---
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userProfile, setUserProfile] = useState({
@@ -100,6 +109,10 @@ export default function App() {
   const [showFirModal, setShowFirModal] = useState(false);
   const [firComplaints, setFirComplaints] = useState(INITIAL_POLICE_COMPLAINTS);
 
+  // Advanced Security & Escort Modals
+  const [showStealthBatteryModal, setShowStealthBatteryModal] = useState(false);
+  const [showPinkCompanionModal, setShowPinkCompanionModal] = useState(false);
+
   // Virtual IoT ESP32 Smart Ring Device State
   const [iotDevice, setIotDevice] = useState({
     name: "SmartGuard ESP32-WROOM Ring",
@@ -126,9 +139,34 @@ export default function App() {
       deviations: 0,
       sosTriggered: false,
       breadcrumbsCount: 42,
-      hash: "0x8f3c2a...e91b"
+      hash: "0x8f3c2a4e91b0d745a1e2f3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4"
     }
   ]);
+
+  // --- SHAKE TO SOS (DeviceMotionEvent API) ---
+  useEffect(() => {
+    let lastShake = 0;
+    const handleMotion = (event) => {
+      const acc = event.accelerationIncludingGravity;
+      if (!acc) return;
+      const totalAcc = Math.sqrt(acc.x * acc.x + acc.y * acc.y + acc.z * acc.z);
+      if (totalAcc > 25) {
+        const now = Date.now();
+        if (now - lastShake > 3000) {
+          lastShake = now;
+          triggerSOS("Device Shake Gesture Trigger (>25m/s²)");
+        }
+      }
+    };
+    if (typeof window !== 'undefined' && 'DeviceMotionEvent' in window) {
+      window.addEventListener('devicemotion', handleMotion);
+    }
+    return () => {
+      if (typeof window !== 'undefined' && 'DeviceMotionEvent' in window) {
+        window.removeEventListener('devicemotion', handleMotion);
+      }
+    };
+  }, []);
 
   // --- EMERGENCY HANDLERS ---
   const triggerSOS = (source = "Manual Button") => {
@@ -266,7 +304,7 @@ export default function App() {
       deviations: routeMode === 'deviated' ? 1 : 0,
       sosTriggered: sosActive,
       breadcrumbsCount: breadcrumbs.length,
-      hash: `0x${Math.random().toString(16).substr(2, 8)}...${Math.random().toString(16).substr(2, 4)}`
+      hash: `0x${Math.random().toString(16).substring(2, 10)}...${Math.random().toString(16).substring(2, 6)}`
     };
 
     setJourneyHistory(prev => [report, ...prev]);
@@ -396,6 +434,8 @@ export default function App() {
                 setShowPinModal={setShowPinModal}
                 setShowIncidentModal={setShowIncidentModal}
                 setShowFirModal={setShowFirModal}
+                setShowStealthBatteryModal={setShowStealthBatteryModal}
+                setShowPinkCompanionModal={setShowPinkCompanionModal}
                 aiRiskScore={aiRiskScore}
                 isRecordingAudio={isRecordingAudio}
                 anomalyLogs={anomalyLogs}
@@ -453,6 +493,10 @@ export default function App() {
 
             {activeTab === 'btech' && (
               <BTechSrsTab />
+            )}
+
+            {activeTab === 'blockchain' && (
+              <BlockchainVaultTab />
             )}
 
             {activeTab === 'report' && (
@@ -517,6 +561,17 @@ export default function App() {
               onClose={() => setShowFirModal(false)}
             />
           )}
+
+          <StealthBatteryModal 
+            isOpen={showStealthBatteryModal}
+            onClose={() => setShowStealthBatteryModal(false)}
+            triggerSOS={triggerSOS}
+          />
+
+          <PinkCompanionModal 
+            isOpen={showPinkCompanionModal}
+            onClose={() => setShowPinkCompanionModal(false)}
+          />
 
           <footer className="mt-auto border-t border-slate-800/80 bg-slate-950 py-3 px-4 text-center text-xs text-slate-500 no-print">
             SmartGuard AI © 2026 – B.Tech Final Year Engineering Project System

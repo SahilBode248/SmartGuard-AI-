@@ -1,5 +1,5 @@
 import React from 'react';
-import { Code, Cpu, Layers } from 'lucide-react';
+import { Cpu, Layers } from 'lucide-react';
 
 export default function BTechSrsTab() {
   return (
@@ -11,7 +11,7 @@ export default function BTechSrsTab() {
             B.TECH CAPSTONE SPECIFICATIONS
           </span>
           <h2 className="text-xl font-bold text-white mt-1">Software Requirements Specification (SRS) & Architecture</h2>
-          <p className="text-xs text-slate-400">Hardware pinout table and distributed dispatch architecture.</p>
+          <p className="text-xs text-slate-400">Hardware pinout table, 3-tier distributed dispatch, and LoRa/biometric specs.</p>
         </div>
       </div>
 
@@ -26,19 +26,19 @@ export default function BTechSrsTab() {
             <div className="p-3.5 rounded-xl bg-purple-950/40 border border-purple-800/40">
               <span className="font-bold text-purple-300">1. SENSOR & WEARABLE HARDWARE LAYER</span>
               <p className="text-slate-300 mt-1">
-                ESP32 Microcontroller, MPU6050 6-Axis Gyroscope/Accelerometer, Neo-6M GPS Module, SIM800L GSM Module, GPIO Panic Tactile Interrupt.
+                ESP32 Microcontroller, MPU6050 Gyro/Accel, MAX30102 PPG Heart Rate, ESP32-CAM Stealth Snapshots, LoRa SX1276 Mesh Module.
               </p>
             </div>
             <div className="p-3.5 rounded-xl bg-cyan-950/40 border border-cyan-800/40">
               <span className="font-bold text-cyan-300">2. MOBILE & EDGE COMPUTING LAYER</span>
               <p className="text-slate-300 mt-1">
-                Spatial Haversine Distance Engine, Web Speech API Voice SOS Keyword Detection, Web Audio 105dB Tactical Siren Synthesizer.
+                Spatial Haversine Distance Engine, Web Speech API Voice SOS, Shake-to-SOS Gestures, Web Audio 105dB Tactical Siren.
               </p>
             </div>
             <div className="p-3.5 rounded-xl bg-rose-950/40 border border-rose-800/40">
               <span className="font-bold text-rose-300">3. DISPATCH & GUARDIAN PORTAL LAYER</span>
               <p className="text-slate-300 mt-1">
-                Twilio Emergency SMS Gateway, Live Guardian Web Command Portal, Helpline 112 Speed Dispatch, Safe-Arrival Monitor Engine.
+                Polygon L2 Evidence Vault, Twilio WhatsApp / SMS Gateway, Live Guardian Web Command Portal, Helpline 112 Speed Dispatch.
               </p>
             </div>
           </div>
@@ -50,21 +50,25 @@ export default function BTechSrsTab() {
             <Cpu className="w-4 h-4 text-purple-400" /> ESP32 Hardware Pinout Mapping
           </h3>
           <div className="space-y-2 text-xs font-mono">
-            <div className="flex justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
-              <span className="text-slate-400">GPIO21 (I2C SDA)</span>
-              <span className="text-indigo-300 font-bold">MPU6050 SDA</span>
+            <div className="flex justify-between p-2 rounded-xl bg-slate-950 border border-slate-800">
+              <span className="text-slate-400">GPIO21 / GPIO22</span>
+              <span className="text-indigo-300 font-bold">MPU6050 & MAX30102 I2C</span>
             </div>
-            <div className="flex justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
-              <span className="text-slate-400">GPIO22 (I2C SCL)</span>
-              <span className="text-indigo-300 font-bold">MPU6050 SCL</span>
-            </div>
-            <div className="flex justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+            <div className="flex justify-between p-2 rounded-xl bg-slate-950 border border-slate-800">
               <span className="text-slate-400">GPIO4 (INPUT)</span>
               <span className="text-rose-400 font-bold">SOS Push Button</span>
             </div>
-            <div className="flex justify-between p-2.5 rounded-xl bg-slate-950 border border-slate-800">
+            <div className="flex justify-between p-2 rounded-xl bg-slate-950 border border-slate-800">
               <span className="text-slate-400">GPIO16 / GPIO17</span>
               <span className="text-cyan-400 font-bold">SIM800L UART RX/TX</span>
+            </div>
+            <div className="flex justify-between p-2 rounded-xl bg-slate-950 border border-slate-800">
+              <span className="text-slate-400">GPIO5 / GPIO18 (SPI)</span>
+              <span className="text-emerald-400 font-bold">LoRa SX1276 CS / SCK</span>
+            </div>
+            <div className="flex justify-between p-2 rounded-xl bg-slate-950 border border-slate-800">
+              <span className="text-slate-400">GPIO32 (CAM CLK)</span>
+              <span className="text-purple-400 font-bold">ESP32-CAM XVCLK</span>
             </div>
           </div>
         </div>

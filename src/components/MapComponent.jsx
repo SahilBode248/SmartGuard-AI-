@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, Circle, Tooltip, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { SAFE_SPACES, CRIME_DANGER_ZONES } from '../services/locationService';
+import { SAFE_SPACES, CRIME_DANGER_ZONES, PINK_COMPANION_VOLUNTEERS } from '../services/locationService';
 
 // Fix Leaflet Default Icon in Vite
 delete L.Icon.Default.prototype._getIconUrl;
@@ -54,6 +54,7 @@ const userIcon = createCustomIcon('#3b82f6', '👤');
 const userSosIcon = createCustomIcon('#ef4444', '🚨', true);
 const policeIcon = createCustomIcon('#2563eb', '👮');
 const pinkBoothIcon = createCustomIcon('#ec4899', '🌸');
+const pinkCompanionIcon = createCustomIcon('#f43f5e', '🌸', true);
 const safeHavenIcon = createCustomIcon('#10b981', '🛡️');
 const crimeRedIcon = createCustomIcon('#dc2626', '🚨', true);
 
@@ -204,6 +205,22 @@ export default function MapComponent({
                 </span>
                 <h4 className="font-bold text-slate-100 mt-1">{space.name}</h4>
                 <p className="text-xs text-slate-300">📞 Helpline: {space.phone}</p>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+
+        {/* Verified Pink Companion Volunteers */}
+        {PINK_COMPANION_VOLUNTEERS.map(vol => (
+          <Marker key={vol.id} position={[vol.lat, vol.lng]} icon={pinkCompanionIcon}>
+            <Popup>
+              <div className="p-1 font-sans">
+                <span className="text-[10px] uppercase font-bold text-pink-400 px-1.5 py-0.5 rounded bg-pink-500/10">
+                  🌸 PINK COMPANION ESCORT
+                </span>
+                <h4 className="font-bold text-slate-100 mt-1">{vol.name}</h4>
+                <p className="text-xs text-slate-300">Rating: ⭐ {vol.rating} • {vol.trips} Trips</p>
+                <p className="text-[10px] text-pink-400 font-bold">{vol.status}</p>
               </div>
             </Popup>
           </Marker>
